@@ -1,13 +1,6 @@
 // Initialize Telegram MiniApp
 const loader = document.getElementById("loader");
 const appContainer = document.getElementById("appContainer");
-document.addEventListener("DOMContentLoaded", () => {
-  const telegramApp = window.Telegram.WebApp;
-  telegramApp.ready && telegramApp.ready();
-  telegramApp.expand();
-  loader.style.display = "none";
-  appContainer.style.display = "block";
-});
 
 const telegramApp = window.Telegram.WebApp;
 telegramApp.expand();
@@ -118,7 +111,7 @@ const catalogElement = document.getElementById("catalog");
 const detailPage = document.getElementById("detailPage");
 const backButton = document.getElementById("backButton");
 const detailName = document.getElementById("detailName");
-const detailTitle = document.getElementById("detailTitle");
+// const detailTitle = document.getElementById("detailTitle");
 const detailAge = document.getElementById("detailAge");
 const detailDesc = document.getElementById("detailDesc");
 const chatButton = document.getElementById("chatButton");
@@ -128,6 +121,9 @@ const sliderPrev = document.getElementById("sliderPrev");
 const sliderNext = document.getElementById("sliderNext");
 const photoSlider = document.getElementById("photoSlider");
 const detailContent = document.querySelector(".detail-content");
+const detailHeader = document.querySelector(".detail-header");
+const detailTitleName = document.querySelector(".detail-title-name");
+const subtitle = document.querySelector(".subtitle");
 
 // Current state
 let currentSlide = 0;
@@ -135,6 +131,12 @@ let currentAccount = null;
 let isSliding = false;
 
 window.addEventListener("DOMContentLoaded", () => {
+  const telegramApp = window.Telegram.WebApp;
+  telegramApp.ready && telegramApp.ready();
+  telegramApp.expand();
+  loader.style.display = "none";
+  appContainer.style.display = "block";
+
   // Create banners for each account
   function renderCatalog() {
     catalogElement.innerHTML = "";
@@ -175,10 +177,18 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Show detail page for an account
   function showDetail(account) {
+    detailHeader.style.display = "flex";
+    detailTitleName.style.display = "flex";
+    subtitle.style.display = "none";
+
     currentAccount = account;
 
     catalogElement.style.display = "none";
     detailPage.style.display = "block";
+
+    detailTitleName.innerHTML = `
+       <h2>${account.name} Profile</h2>      
+    `;
 
     sliderContainer.innerHTML = `
         <div class="detail-bio">
@@ -213,6 +223,9 @@ window.addEventListener("DOMContentLoaded", () => {
                       }" class="grid-photo hideGridPhoto">`
                   )
                   .join("")}
+                  <div id = "myModal" class = "modal" >  
+                    <img class = "modal-content" id = "img01" >                  
+                  </div>
             </div>
         </div>
     `;
@@ -230,37 +243,65 @@ window.addEventListener("DOMContentLoaded", () => {
             </div>
     `;
 
+    //--------------------------------------------------------
+
+    // Get the modal
+    const modal = document.querySelector("#myModal");
+
+    // Get the image and insert it inside the modal - use its "alt" text as a caption
+    const imagesPersonalList = document.querySelectorAll(".grid-photo");
+    const modalImg = document.querySelector("#img01");
+
+    imagesPersonalList.forEach((item) => {
+      item.addEventListener("click", () => {
+        modal.style.display = "block";
+        modalImg.src = item.src;
+        modalImg.alt = item.alt;
+      });
+    });
+
+    modal.addEventListener("click", (event) => {
+      console.log(event.target.className);
+      modalImg.className += " out";
+      setTimeout(function () {
+        modal.style.display = "none";
+        modalImg.className = "modal-content";
+      }, 400);
+    });
+
+    //-----------------------------------------------------------------------------------
+
     // sliderDots.innerHTML = '';
 
     const gridPhoto = document.querySelectorAll(".grid-photo");
     console.log(gridPhoto);
 
-    if (gridPhoto.length > 0) {
-      for (let photo of gridPhoto) {
-        photo.addEventListener("click", () => {
-          // (B1) EXIT FULLSCREEN
-          if (
-            document.fullscreenElement != null ||
-            document.webkitFullscreenElement != null
-          ) {
-            if (document.exitFullscreen) {
-              document.exitFullscreen();
-            } else {
-              document.webkitCancelFullScreen();
-            }
-          }
+    // if (gridPhoto.length > 0) {
+    //   for (let photo of gridPhoto) {
+    //     photo.addEventListener("click", () => {
+    //       // (B1) EXIT FULLSCREEN
+    //       if (
+    //         document.fullscreenElement != null ||
+    //         document.webkitFullscreenElement != null
+    //       ) {
+    //         if (document.exitFullscreen) {
+    //           document.exitFullscreen();
+    //         } else {
+    //           document.webkitCancelFullScreen();
+    //         }
+    //       }
 
-          // (B2) ENTER FULLSCREEN
-          else {
-            if (photo.requestFullscreen) {
-              photo.requestFullscreen();
-            } else {
-              photo.webkitRequestFullScreen();
-            }
-          }
-        });
-      }
-    }
+    //       // (B2) ENTER FULLSCREEN
+    //       else {
+    //         if (photo.requestFullscreen) {
+    //           photo.requestFullscreen();
+    //         } else {
+    //           photo.webkitRequestFullScreen();
+    //         }
+    //       }
+    //     });
+    //   }
+    // }
 
     // window.onload = () => {
     //   // (A) GET ALL IMAGES
@@ -270,14 +311,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // };
 
-    // gridPhoto.forEach((item) => {
-    //   item.addEventListener("click", () => {
-    //     item.classList.toggle("hideGridPhoto");
-    //     item.classList.toggle("showGridPhoto");
+    gridPhoto.forEach((item) => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("fullscreen");
+        // item.classList.toggle("showGridPhoto");
 
-    //     // item.classList.toggle("showGridPhoto");
-    //   });
-    // });
+        // item.classList.toggle("showGridPhoto");
+      });
+    });
 
     // gridPhoto.forEach((item) => {
     //   item.addEventListener("click", () => {
@@ -292,10 +333,16 @@ window.addEventListener("DOMContentLoaded", () => {
   //   image.style.height = "100%";
   // }
 
+  // UI navigation
+  backButton.addEventListener("click", hideDetail);
+
   // Hide detail page
   function hideDetail() {
+    detailHeader.style.display = "none";
     detailPage.style.display = "none";
     catalogElement.style.display = "grid";
+    detailTitle.style.display = "none";
+    subtitle.style.display = "block";
     currentAccount = null;
     console.log("vbf");
   }
@@ -370,9 +417,6 @@ window.addEventListener("DOMContentLoaded", () => {
         currentSlide === currentAccount.photos.length - 1 ? "0.5" : "1";
     }
   }
-
-  // UI navigation
-  backButton.addEventListener("click", hideDetail);
 
   // Keyboard navigation
   document.addEventListener("keydown", (e) => {
