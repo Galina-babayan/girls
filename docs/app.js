@@ -234,15 +234,62 @@ function showDetail(account) {
   const gridPhoto = document.querySelectorAll(".grid-photo");
   console.log(gridPhoto);
 
-  gridPhoto.forEach((item) => {
-    item.addEventListener("click", () => {
-      item.classList.toggle("hideGridPhoto");
-      item.classList.toggle("showGridPhoto");
+  if (gridPhoto.length > 0) {
+    for (let photo of gridPhoto) {
+      photo.onclick = () => {
+        // (B1) EXIT FULLSCREEN
+        if (
+          document.fullscreenElement != null ||
+          document.webkitFullscreenElement != null
+        ) {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          } else {
+            document.webkitCancelFullScreen();
+          }
+        }
 
-      // item.classList.toggle("showGridPhoto");
-    });
-  });
+        // (B2) ENTER FULLSCREEN
+        else {
+          if (photo.requestFullscreen) {
+            photo.requestFullscreen();
+          } else {
+            photo.webkitRequestFullScreen();
+          }
+        }
+      };
+    }
+  }
+
+  // window.onload = () => {
+  //   // (A) GET ALL IMAGES
+  //   let all = document.getElementsByClassName("zoomE");
+
+  //   // (B) CLICK TO GO FULLSCREEN
+
+  // };
+
+  // gridPhoto.forEach((item) => {
+  //   item.addEventListener("click", () => {
+  //     item.classList.toggle("hideGridPhoto");
+  //     item.classList.toggle("showGridPhoto");
+
+  //     // item.classList.toggle("showGridPhoto");
+  //   });
+  // });
+
+  // gridPhoto.forEach((item) => {
+  //   item.addEventListener("click", () => {
+  //     console.log(item);
+  //     zoomImage(item);
+  //   });
+  // });
 }
+
+// function zoomImage(image) {
+//   image.style.width = "100%";
+//   image.style.height = "100%";
+// }
 
 // Hide detail page
 function hideDetail() {
