@@ -134,15 +134,16 @@ let currentSlide = 0;
 let currentAccount = null;
 let isSliding = false;
 
-// Create banners for each account
-function renderCatalog() {
-  catalogElement.innerHTML = "";
+window.addEventListener("DOMContentLoaded", () => {
+  // Create banners for each account
+  function renderCatalog() {
+    catalogElement.innerHTML = "";
 
-  accounts.forEach((account) => {
-    const banner = document.createElement("div");
-    banner.className = "banner";
+    accounts.forEach((account) => {
+      const banner = document.createElement("div");
+      banner.className = "banner";
 
-    banner.innerHTML = `
+      banner.innerHTML = `
             <div class="banner-img-container">
                 <img src="${account.photos[0]}" alt="${account.name}" class="banner-img">
                 <div class="banner-overlay">
@@ -166,24 +167,24 @@ function renderCatalog() {
       
         `;
 
-    catalogElement.appendChild(banner);
+      catalogElement.appendChild(banner);
 
-    banner.addEventListener("click", () => showDetail(account));
-  });
-}
+      banner.addEventListener("click", () => showDetail(account));
+    });
+  }
 
-// Show detail page for an account
-function showDetail(account) {
-  currentAccount = account;
+  // Show detail page for an account
+  function showDetail(account) {
+    currentAccount = account;
 
-  catalogElement.style.display = "none";
-  detailPage.style.display = "block";
+    catalogElement.style.display = "none";
+    detailPage.style.display = "block";
 
-  sliderContainer.innerHTML = `
+    sliderContainer.innerHTML = `
         <div class="detail-bio">
             <img src="${account.photos[0]}" alt="${
-    account.name
-  }" class="main-detail-img">
+      account.name
+    }" class="main-detail-img">
             <div class="detail-title">
                 <h2>${account.name}</h2>
                 <img src="./assets/icons/pink.png" alt="icon" class="detail-title__icon">
@@ -216,7 +217,7 @@ function showDetail(account) {
         </div>
     `;
 
-  detailContent.innerHTML = `
+    detailContent.innerHTML = `
         <h2 class="detail-title" id="detailTitle"></h2>
         <p class="detail-age" id="detailAge"></p>
         <p class="detail-desc" id="detailDesc"></p>
@@ -229,231 +230,232 @@ function showDetail(account) {
             </div>
     `;
 
-  // sliderDots.innerHTML = '';
+    // sliderDots.innerHTML = '';
 
-  const gridPhoto = document.querySelectorAll(".grid-photo");
-  console.log(gridPhoto);
+    const gridPhoto = document.querySelectorAll(".grid-photo");
+    console.log(gridPhoto);
 
-  if (gridPhoto.length > 0) {
-    for (let photo of gridPhoto) {
-      photo.click = () => {
-        // (B1) EXIT FULLSCREEN
-        if (
-          document.fullscreenElement != null ||
-          document.webkitFullscreenElement != null
-        ) {
-          if (document.exitFullscreen) {
-            document.exitFullscreen();
-          } else {
-            document.webkitCancelFullScreen();
+    if (gridPhoto.length > 0) {
+      for (let photo of gridPhoto) {
+        photo.addEventListener("click", () => {
+          // (B1) EXIT FULLSCREEN
+          if (
+            document.fullscreenElement != null ||
+            document.webkitFullscreenElement != null
+          ) {
+            if (document.exitFullscreen) {
+              document.exitFullscreen();
+            } else {
+              document.webkitCancelFullScreen();
+            }
           }
-        }
 
-        // (B2) ENTER FULLSCREEN
-        else {
-          if (photo.requestFullscreen) {
-            photo.requestFullscreen();
-          } else {
-            photo.webkitRequestFullScreen();
+          // (B2) ENTER FULLSCREEN
+          else {
+            if (photo.requestFullscreen) {
+              photo.requestFullscreen();
+            } else {
+              photo.webkitRequestFullScreen();
+            }
           }
-        }
-      };
+        });
+      }
+    }
+
+    // window.onload = () => {
+    //   // (A) GET ALL IMAGES
+    //   let all = document.getElementsByClassName("zoomE");
+
+    //   // (B) CLICK TO GO FULLSCREEN
+
+    // };
+
+    // gridPhoto.forEach((item) => {
+    //   item.addEventListener("click", () => {
+    //     item.classList.toggle("hideGridPhoto");
+    //     item.classList.toggle("showGridPhoto");
+
+    //     // item.classList.toggle("showGridPhoto");
+    //   });
+    // });
+
+    // gridPhoto.forEach((item) => {
+    //   item.addEventListener("click", () => {
+    //     console.log(item);
+    //     zoomImage(item);
+    //   });
+    // });
+  }
+
+  // function zoomImage(image) {
+  //   image.style.width = "100%";
+  //   image.style.height = "100%";
+  // }
+
+  // Hide detail page
+  function hideDetail() {
+    detailPage.style.display = "none";
+    catalogElement.style.display = "grid";
+    currentAccount = null;
+    console.log("vbf");
+  }
+
+  // Go to specific slide
+  function goToSlide(index) {
+    if (isSliding || !currentAccount) return;
+
+    isSliding = true;
+    currentSlide = index;
+
+    // Make sure index is within bounds
+    if (currentSlide < 0) currentSlide = 0;
+    if (currentSlide >= currentAccount.photos.length) {
+      currentSlide = currentAccount.photos.length - 1;
+    }
+
+    sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+    // Update dots
+    const dots = sliderDots.querySelectorAll(".dot");
+    dots.forEach((dot, i) => {
+      dot.className = i === currentSlide ? "dot active" : "dot";
+    });
+
+    updateArrows();
+
+    // Re-enable sliding after animation completes
+    setTimeout(() => {
+      isSliding = false;
+    }, 300);
+  }
+
+  // Next slide
+  function nextSlide() {
+    if (!currentAccount || isSliding) return;
+
+    if (currentSlide < currentAccount.photos.length - 1) {
+      goToSlide(currentSlide + 1);
+    } else {
+      // Optional: loop back to first slide
+      goToSlide(0);
     }
   }
 
-  // window.onload = () => {
-  //   // (A) GET ALL IMAGES
-  //   let all = document.getElementsByClassName("zoomE");
+  // Previous slide
+  function prevSlide() {
+    if (!currentAccount || isSliding) return;
 
-  //   // (B) CLICK TO GO FULLSCREEN
-
-  // };
-
-  // gridPhoto.forEach((item) => {
-  //   item.addEventListener("click", () => {
-  //     item.classList.toggle("hideGridPhoto");
-  //     item.classList.toggle("showGridPhoto");
-
-  //     // item.classList.toggle("showGridPhoto");
-  //   });
-  // });
-
-  // gridPhoto.forEach((item) => {
-  //   item.addEventListener("click", () => {
-  //     console.log(item);
-  //     zoomImage(item);
-  //   });
-  // });
-}
-
-// function zoomImage(image) {
-//   image.style.width = "100%";
-//   image.style.height = "100%";
-// }
-
-// Hide detail page
-function hideDetail() {
-  detailPage.style.display = "none";
-  catalogElement.style.display = "grid";
-  currentAccount = null;
-  console.log("vbf");
-}
-
-// Go to specific slide
-function goToSlide(index) {
-  if (isSliding || !currentAccount) return;
-
-  isSliding = true;
-  currentSlide = index;
-
-  // Make sure index is within bounds
-  if (currentSlide < 0) currentSlide = 0;
-  if (currentSlide >= currentAccount.photos.length) {
-    currentSlide = currentAccount.photos.length - 1;
+    if (currentSlide > 0) {
+      goToSlide(currentSlide - 1);
+    } else {
+      // Optional: loop to last slide
+      goToSlide(currentAccount.photos.length - 1);
+    }
   }
 
-  sliderContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+  // Update arrows visibility and state
+  function updateArrows() {
+    if (!currentAccount) return;
 
-  // Update dots
-  const dots = sliderDots.querySelectorAll(".dot");
-  dots.forEach((dot, i) => {
-    dot.className = i === currentSlide ? "dot active" : "dot";
+    if (currentAccount.photos.length <= 1) {
+      sliderPrev.style.display = "none";
+      sliderNext.style.display = "none";
+    } else {
+      sliderPrev.style.display = "flex";
+      sliderNext.style.display = "flex";
+
+      // Optionally change opacity based on position
+      sliderPrev.style.opacity = currentSlide === 0 ? "0.5" : "1";
+      sliderNext.style.opacity =
+        currentSlide === currentAccount.photos.length - 1 ? "0.5" : "1";
+    }
+  }
+
+  // UI navigation
+  backButton.addEventListener("click", hideDetail);
+
+  // Keyboard navigation
+  document.addEventListener("keydown", (e) => {
+    if (!currentAccount) return;
+
+    if (e.key === "ArrowLeft") {
+      prevSlide();
+    } else if (e.key === "ArrowRight") {
+      nextSlide();
+    } else if (e.key === "Escape") {
+      hideDetail();
+    }
   });
 
-  updateArrows();
+  // Initialize the app
+  renderCatalog();
 
-  // Re-enable sliding after animation completes
-  setTimeout(() => {
-    isSliding = false;
-  }, 300);
-}
+  const MIN_SPEED = 1.5;
+  const MAX_SPEED = 2.5;
 
-// Next slide
-function nextSlide() {
-  if (!currentAccount || isSliding) return;
-
-  if (currentSlide < currentAccount.photos.length - 1) {
-    goToSlide(currentSlide + 1);
-  } else {
-    // Optional: loop back to first slide
-    goToSlide(0);
-  }
-}
-
-// Previous slide
-function prevSlide() {
-  if (!currentAccount || isSliding) return;
-
-  if (currentSlide > 0) {
-    goToSlide(currentSlide - 1);
-  } else {
-    // Optional: loop to last slide
-    goToSlide(currentAccount.photos.length - 1);
-  }
-}
-
-// Update arrows visibility and state
-function updateArrows() {
-  if (!currentAccount) return;
-
-  if (currentAccount.photos.length <= 1) {
-    sliderPrev.style.display = "none";
-    sliderNext.style.display = "none";
-  } else {
-    sliderPrev.style.display = "flex";
-    sliderNext.style.display = "flex";
-
-    // Optionally change opacity based on position
-    sliderPrev.style.opacity = currentSlide === 0 ? "0.5" : "1";
-    sliderNext.style.opacity =
-      currentSlide === currentAccount.photos.length - 1 ? "0.5" : "1";
-  }
-}
-
-// UI navigation
-backButton.addEventListener("click", hideDetail);
-
-// Keyboard navigation
-document.addEventListener("keydown", (e) => {
-  if (!currentAccount) return;
-
-  if (e.key === "ArrowLeft") {
-    prevSlide();
-  } else if (e.key === "ArrowRight") {
-    nextSlide();
-  } else if (e.key === "Escape") {
-    hideDetail();
-  }
-});
-
-// Initialize the app
-renderCatalog();
-
-const MIN_SPEED = 1.5;
-const MAX_SPEED = 2.5;
-
-function randomNumber(min, max) {
-  return Math.random() * (max - min) + min;
-}
-
-class Blob {
-  constructor(el) {
-    this.el = el;
-    const boundingRect = this.el.getBoundingClientRect();
-    this.size = boundingRect.width;
-    this.initialX = randomNumber(0, window.innerWidth - this.size);
-    this.initialY = randomNumber(0, window.innerHeight - this.size);
-    this.el.style.top = `${this.initialY}px`;
-    this.el.style.left = `${this.initialX}px`;
-    this.vx =
-      randomNumber(MIN_SPEED, MAX_SPEED) * (Math.random() > 0.5 ? 1 : -1);
-    this.vy =
-      randomNumber(MIN_SPEED, MAX_SPEED) * (Math.random() > 0.5 ? 1 : -1);
-    this.x = this.initialX;
-    this.y = this.initialY;
+  function randomNumber(min, max) {
+    return Math.random() * (max - min) + min;
   }
 
-  update() {
-    this.x += this.vx;
-    this.y += this.vy;
-    if (this.x >= window.innerWidth - this.size) {
-      this.x = window.innerWidth - this.size;
-      this.vx *= -1;
+  class Blob {
+    constructor(el) {
+      this.el = el;
+      const boundingRect = this.el.getBoundingClientRect();
+      this.size = boundingRect.width;
+      this.initialX = randomNumber(0, window.innerWidth - this.size);
+      this.initialY = randomNumber(0, window.innerHeight - this.size);
+      this.el.style.top = `${this.initialY}px`;
+      this.el.style.left = `${this.initialX}px`;
+      this.vx =
+        randomNumber(MIN_SPEED, MAX_SPEED) * (Math.random() > 0.5 ? 1 : -1);
+      this.vy =
+        randomNumber(MIN_SPEED, MAX_SPEED) * (Math.random() > 0.5 ? 1 : -1);
+      this.x = this.initialX;
+      this.y = this.initialY;
     }
-    if (this.y >= window.innerHeight - this.size) {
-      this.y = window.innerHeight - this.size;
-      this.vy *= -1;
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+      if (this.x >= window.innerWidth - this.size) {
+        this.x = window.innerWidth - this.size;
+        this.vx *= -1;
+      }
+      if (this.y >= window.innerHeight - this.size) {
+        this.y = window.innerHeight - this.size;
+        this.vy *= -1;
+      }
+      if (this.x <= 0) {
+        this.x = 0;
+        this.vx *= -1;
+      }
+      if (this.y <= 0) {
+        this.y = 0;
+        this.vy *= -1;
+      }
     }
-    if (this.x <= 0) {
-      this.x = 0;
-      this.vx *= -1;
-    }
-    if (this.y <= 0) {
-      this.y = 0;
-      this.vy *= -1;
+
+    move() {
+      this.el.style.transform = `translate(${this.x - this.initialX}px, ${
+        this.y - this.initialY
+      }px)`;
     }
   }
 
-  move() {
-    this.el.style.transform = `translate(${this.x - this.initialX}px, ${
-      this.y - this.initialY
-    }px)`;
-  }
-}
+  function initBlobs() {
+    const blobEls = document.querySelectorAll(".bouncing-blob");
+    const blobs = Array.from(blobEls).map((blobEl) => new Blob(blobEl));
 
-function initBlobs() {
-  const blobEls = document.querySelectorAll(".bouncing-blob");
-  const blobs = Array.from(blobEls).map((blobEl) => new Blob(blobEl));
+    function update() {
+      requestAnimationFrame(update);
+      blobs.forEach((blob) => {
+        blob.update();
+        blob.move();
+      });
+    }
 
-  function update() {
     requestAnimationFrame(update);
-    blobs.forEach((blob) => {
-      blob.update();
-      blob.move();
-    });
   }
 
-  requestAnimationFrame(update);
-}
-
-initBlobs();
+  initBlobs();
+});
