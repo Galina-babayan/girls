@@ -236,7 +236,7 @@ function showDetail(account) {
 
   if (gridPhoto.length > 0) {
     for (let photo of gridPhoto) {
-      photo.onclick = () => {
+      photo.click = () => {
         // (B1) EXIT FULLSCREEN
         if (
           document.fullscreenElement != null ||
