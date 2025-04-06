@@ -131,6 +131,9 @@ let currentAccount = null;
 let isSliding = false;
 
 window.addEventListener("DOMContentLoaded", () => {
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  };
   const telegramApp = window.Telegram.WebApp;
   telegramApp.ready && telegramApp.ready();
   telegramApp.expand();
@@ -177,6 +180,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // Show detail page for an account
   function showDetail(account) {
+    window.scrollTo(0, 0);
     detailHeader.style.display = "flex";
     detailTitleName.style.display = "flex";
     subtitle.style.display = "none";
@@ -272,72 +276,14 @@ window.addEventListener("DOMContentLoaded", () => {
     //-----------------------------------------------------------------------------------
 
     // sliderDots.innerHTML = '';
-
-    const gridPhoto = document.querySelectorAll(".grid-photo");
-    console.log(gridPhoto);
-
-    // if (gridPhoto.length > 0) {
-    //   for (let photo of gridPhoto) {
-    //     photo.addEventListener("click", () => {
-    //       // (B1) EXIT FULLSCREEN
-    //       if (
-    //         document.fullscreenElement != null ||
-    //         document.webkitFullscreenElement != null
-    //       ) {
-    //         if (document.exitFullscreen) {
-    //           document.exitFullscreen();
-    //         } else {
-    //           document.webkitCancelFullScreen();
-    //         }
-    //       }
-
-    //       // (B2) ENTER FULLSCREEN
-    //       else {
-    //         if (photo.requestFullscreen) {
-    //           photo.requestFullscreen();
-    //         } else {
-    //           photo.webkitRequestFullScreen();
-    //         }
-    //       }
-    //     });
-    //   }
-    // }
-
-    // window.onload = () => {
-    //   // (A) GET ALL IMAGES
-    //   let all = document.getElementsByClassName("zoomE");
-
-    //   // (B) CLICK TO GO FULLSCREEN
-
-    // };
-
-    gridPhoto.forEach((item) => {
-      item.addEventListener("click", () => {
-        item.classList.toggle("fullscreen");
-        // item.classList.toggle("showGridPhoto");
-
-        // item.classList.toggle("showGridPhoto");
-      });
-    });
-
-    // gridPhoto.forEach((item) => {
-    //   item.addEventListener("click", () => {
-    //     console.log(item);
-    //     zoomImage(item);
-    //   });
-    // });
   }
-
-  // function zoomImage(image) {
-  //   image.style.width = "100%";
-  //   image.style.height = "100%";
-  // }
 
   // UI navigation
   backButton.addEventListener("click", hideDetail);
 
   // Hide detail page
   function hideDetail() {
+    window.scrollTo(0, 0);
     detailHeader.style.display = "none";
     detailPage.style.display = "none";
     catalogElement.style.display = "grid";
