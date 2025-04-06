@@ -665,12 +665,17 @@ body {
 
 .photo-grid {
   margin-bottom: 10px;
-  padding: 0 20px;
+  padding: 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 5px;
+  width: 100%;
+  /* gap: 5px; */
+}
+
+.photo-grid img {
+  border-radius: 10px;
 }
 
 .grid-photo {
@@ -678,12 +683,17 @@ body {
   /* height: auto; */
   aspect-ratio: 1;
   object-fit: contain;
-  border-radius: 5px;
+  /* border-radius: 10px; */
+  /* overflow: hidden; */
   cursor: pointer;
   transition: 0.3s;
   display: block;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0 auto 5px auto;
+  /* margin-right: auto; */
+}
+
+.grid-photo img {
+  width: 100%;
 }
 
 /* The Modal (background) */

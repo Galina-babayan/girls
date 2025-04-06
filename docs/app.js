@@ -222,9 +222,9 @@ window.addEventListener("DOMContentLoaded", () => {
                   .slice(1)
                   .map(
                     (photo, index) =>
-                      `<img src="${photo}" alt="Gallery ${
-                        index + 1
-                      }" class="grid-photo hideGridPhoto">`
+                      `<div class="grid-photo">
+                    <img src="${photo}" alt="Gallery ${index + 1}" >
+                      </div>`
                   )
                   .join("")}
                   <div id = "myModal" class = "modal" >  
