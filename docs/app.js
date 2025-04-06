@@ -191,7 +191,7 @@ window.addEventListener("DOMContentLoaded", () => {
     detailPage.style.display = "block";
 
     detailTitleName.innerHTML = `
-       <h2>${account.name} Profile</h2>      
+       <h2>${account.name}' Profile</h2>      
     `;
 
     sliderContainer.innerHTML = `
@@ -213,7 +213,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 <div class="pulsing-2"></div>
                 <a href="https://t.me/${
                   account.username
-                }" class="chat-button-2">💬 Flirt in Telegram</a>
+                }" class="chat-button-2"><span>💬 Flirt in Telegram</span></a>
                 </div>             
             </div>
          
@@ -242,7 +242,7 @@ window.addEventListener("DOMContentLoaded", () => {
             <div class="button-pulse-2">
                 <div class="button__wrapper-2">
                 <div class="pulsing-2"></div>
-                <a href="https://t.me/${account.username}" class="chat-button-2">💬 Flirt in Telegram</a>
+                <a href="https://t.me/${account.username}" class="chat-button-2"><span>💬 Flirt in Telegram</span></a>
                 </div>             
             </div>
     `;
