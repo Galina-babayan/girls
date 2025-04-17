@@ -316,7 +316,7 @@ window.addEventListener("DOMContentLoaded", () => {
     catalogElement.style.display = "grid";
     detailTitle.style.display = "none";
     subtitle.style.display = "block";
-    headerContainerTitle.style.display = "none";
+    headerContainerTitle.style.display = "block";
     currentAccount = null;
     console.log("vbf");
   }
