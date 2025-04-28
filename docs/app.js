@@ -288,16 +288,18 @@ window.addEventListener("DOMContentLoaded", () => {
         modalPhoto.style.display = "block";
         modalImg.src = item.firstElementChild.src;
         modalImg.alt = item.firstElementChild.alt;
+        document.body.style.overflow = "hidden";
       });
     });
 
     modalPhoto.addEventListener("click", (event) => {
       console.log(event.target.className);
-      modalImg.className += " out";
+      // modalImg.className += " out";
+      document.body.style.overflow = "";
       setTimeout(function () {
         modalPhoto.style.display = "none";
         modalImg.className = "modal-photo__content";
-      }, 400);
+      }, 100);
     });
 
     //-----------------------------------------------------------------------------------
