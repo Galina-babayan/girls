@@ -2,7 +2,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Cormorant Garamond", serif;
+  font-family: "Ysabeau Infant", sans-serif;
   &:before,
   &:after {
     content: "";
@@ -144,6 +144,7 @@ body {
 .header h1 {
   font-size: 28px;
   margin-bottom: 4px;
+  text-shadow: 2px 1px 1px rgb(107, 96, 142);
 }
 
 .subtitle {
@@ -189,6 +190,9 @@ body {
   font-size: 22px;
   font-weight: 600;
   position: relative;
+  h2 {
+    text-shadow: 2px 1px 1px rgb(47, 2, 43);
+  }
 }
 
 .banner-title__icon {
@@ -254,6 +258,7 @@ body {
   /* color: rgb(54, 38, 58); */
 
   font-size: 22px;
+  font-weight: 800;
   background: none;
   /* border: none; */
   margin-right: 22px;
