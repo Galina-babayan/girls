@@ -324,16 +324,22 @@ window.addEventListener("DOMContentLoaded", () => {
             deltaY > 0 ? "100%" : "-100%"
           })`;
           modalImg.style.opacity = 0;
+
           setTimeout(() => {
             modalPhoto.style.display = "none";
             modalImg.style.transition = "none";
             modalImg.style.transform = "translateY(0)";
             modalImg.style.opacity = 1;
+
+            // ВОССТАНОВЛЕНИЕ СКРОЛЛА
+            document.body.style.overflow = "";
           }, 300);
         } else {
           // Иначе плавно возвращаем картинку назад
           modalImg.style.transition = "transform 0.3s ease";
           modalImg.style.transform = "translateY(0)";
+          // ВОССТАНОВЛЕНИЕ СКРОЛЛА
+          document.body.style.overflow = "";
         }
       },
       false
