@@ -128,6 +128,7 @@ const headerContainer = document.querySelector(".header__container");
 const headerContainerTitle = headerContainer.querySelector("h1");
 const modal = document.querySelector(".modal");
 const formConfirmWrapper = document.querySelector(".form");
+//    <img src="./assets/icons/pink.png" alt="icon" class="banner-title__icon">
 
 // Current state
 let currentSlide = 0;
@@ -177,8 +178,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 <img src="${account.photos[0]}" alt="${account.name}" class="banner-img">
                 <div class="banner-overlay">
                           <div class="banner-title">
-                               <h2>${account.name}</h2>
-                               <img src="./assets/icons/pink.png" alt="icon" class="banner-title__icon">
+                               <h2>${account.name}</h2>                            
                            </div>             
                     <p class="banner-age">@${account.username}</p>
                 </div>  
@@ -226,7 +226,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }" class="main-detail-img">
             <div class="detail-title">
                 <h2>${account.name}</h2>
-                <img src="./assets/icons/pink.png" alt="icon" class="detail-title__icon">
+               
             </div>
                 
             <p class="detail-age">${account.age} years old</p>
