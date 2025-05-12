@@ -15,6 +15,7 @@ body {
   background-color: transparent;
   color: #333;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
 }
 
 .page {
