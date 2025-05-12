@@ -113,6 +113,7 @@ const accounts = [
 ];
 
 // DOM Elements
+const main = document.querySelector(".page");
 const catalogElement = document.getElementById("catalog");
 const detailPage = document.getElementById("detailPage");
 const backButton = document.getElementById("backButton");
@@ -137,6 +138,8 @@ const formConfirmWrapper = document.querySelector(".form");
 const footer = document.querySelector(".footer");
 const footerHeight = footer.clientHeight;
 console.log(footerHeight);
+const scrollHeightBody = main.scrollTop;
+console.log(scrollHeightBody);
 //    <img src="./assets/icons/pink.png" alt="icon" class="banner-title__icon">
 
 // Current state
@@ -370,6 +373,7 @@ window.addEventListener("DOMContentLoaded", () => {
         modalImg.src = item.firstElementChild.src;
         modalImg.alt = item.firstElementChild.alt;
         document.body.style.overflow = "hidden";
+        console.log(scrollHeightBody);
       });
     });
 
