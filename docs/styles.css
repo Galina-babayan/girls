@@ -11,14 +11,12 @@
 }
 
 html {
-  overflow: hidden;
-  height: 100%;
+  overscroll-behavior: none;
 }
 
 body {
-  overflow: auto;
+  overflow: hidden;
   height: 100%;
-  overscroll-behavior: none;
   background-color: #93c4cf;
   background-color: transparent;
   color: #333;
