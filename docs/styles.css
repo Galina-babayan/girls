@@ -9,17 +9,11 @@
     position: absolute;
   }
 }
-
-html {
-  overscroll-behavior: none;
-}
-
 body {
-  overflow: hidden;
-  height: 100%;
   background-color: #93c4cf;
   background-color: transparent;
   color: #333;
+  overflow-x: hidden;
 }
 
 .page {
